@@ -173,9 +173,16 @@ orderModalList.addEventListener('click', (e) => {
 		let priseFull = parseInt(priceWithoutSpaces(fullPrice.textContent));
 		const id = parent.dataset.id;
 		
-		// удаляем товары в окне и в мини-корзине
-		parent.remove();
+		parent.style.opacity = '0';
+		setTimeout(() => {
+			parent.style.marginBottom = '0px';
+			parent.style.maxHeight = '0px';
+			orderModalList.style.maxHeight = orderModalList.scrollHeight + 'px';
+		}, 100);
+
+
 		document.querySelector(`.mini-cart__item[data-id="${id}"]`).remove();
+
 		let btnProd = document.querySelector(`.add-to-cart-btn[data-id="${id}"]`);
 		if (btnProd) {
 			btnProd.removeAttribute('disabled');
@@ -186,18 +193,23 @@ orderModalList.addEventListener('click', (e) => {
 		orderModalSumm.textContent = `${normalPrice(priseFull)} р`;
 		fullPrice.textContent = `${normalPrice(priseFull)} р`;
 
-		// изменяем количество товаров в окне, мини-корзине	и кружке с количеством
+		// удаляем товары в окне и в мини-корзине
+		setTimeout(() => {
+			parent.remove();
+			// изменяем количество товаров в окне, мини-корзине	и кружке с количеством
+			let num = document.querySelectorAll('.modal-cart-product').length;
+			if (num == 0) {
+				cartCount.classList.remove('cart__count--active');
+				document.querySelector('.cart').setAttribute("disabled", "disabled");
+				document.querySelector('.modal-cart-form__submit').setAttribute("disabled", "disabled");
+				orderModalShow.classList.remove('modal-cart-order__show--active');
+			}
+			cartCount.textContent = num; 
 
-		let num = document.querySelectorAll('.modal-cart-product').length;
-		if (num == 0) {
-			cartCount.classList.remove('cart__count--active');
-			document.querySelector('.cart').setAttribute("disabled", "disabled");
-			document.querySelector('.modal-cart-form__submit').setAttribute("disabled", "disabled");
-			orderModalShow.classList.remove('modal-cart-order__show--active');
-		}
-		cartCount.textContent = num; 
+			orderModalQuantity.textContent = `${num} шт`;
+		}, 300);
 
-		orderModalQuantity.textContent = `${num} шт`;
+
 
 		updateStorage();
 	}

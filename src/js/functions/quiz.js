@@ -12,6 +12,7 @@ showBlocks(blockIndex);
 function showBlocks() {
 	quizBlocks.forEach((item) => item.style.display = 'none');
 	quizBlocks[blockIndex].style.display = 'block';
+	quizBlocks[blockIndex].classList.add('fadeIn');
 }
 
 // запись названия чекбокса в value инпута чекбокса

@@ -71,7 +71,7 @@ if (catalogProducts) {
 						<div class="catalog-item__img">
 							<img src="${item.mainImage}" loading="lazy" alt="${item.title}">
 							<div class="catalog-item__btns">
-								<button class="catalog-item__btn btn-reset modal-btn" data-id="${item.id}" data-btn="modal-prod" aria-label="Показать информацию о товаре">
+								<button class="catalog-item__btn btn-reset modal-btn" data-id="${item.id}" aria-label="Показать информацию о товаре">
 									<svg><use xlink:href="img/sprite.svg#show"></use></svg>
 								</button>
 								<button class="catalog-item__btn btn-reset add-to-cart-btn" data-id="${item.id}" aria-label="Добавить товар в корзину">
@@ -93,15 +93,8 @@ if (catalogProducts) {
 				}
 			}
 			// функция модального окна
-			bindModal(loadModalData);
-			//todo - переменную const modalBtn перенести внутрь функции bindModal
-			//todo - добавить аргумент func в функцию bindModal(func)
-			//todo - вставить этот код в функцию bindModal (модальное окно) в момент открытия окна (после disableScroll)
-			// получение id кнопки
-			// if (modalContent.classList.contains('modal-prod')) {
-			// 	let openBtnId = lastFocus.dataset.id;
-			// 	func(openBtnId);
-			// }
+			// bindModal(loadModalData);
+
 
 			// делаем видимыми кнопки товара при фокусе (по умолчанию они скрыты)
 			const productsBtns = document.querySelectorAll('.catalog-item__btn');
@@ -136,7 +129,7 @@ if (catalogProducts) {
 				btnBlock(); // блокирование кнопок добавления в корзину
 
 				// при добавлении новых товаров перезапускается функция модального окна
-				bindModal(loadModalData);
+				// bindModal(loadModalData);
 			});
 			
 		} else {
@@ -145,6 +138,22 @@ if (catalogProducts) {
 	};
 
 	loadProducts();
+
+	//* открытие модального окна
+	//todo - добавить аргумент func в функцию openModal(func)
+	//todo - вставить этот код в функцию openModal (модальное окно) в момент открытия окна (после disableScroll)
+	// получение id кнопки
+	// if (modalContent.classList.contains('modal-prod')) {
+	// 	let openBtnId = lastFocus.dataset.id;
+	// 	func(openBtnId);
+	// }
+	catalogProducts.addEventListener('click', function(e) {
+		if (e.target.classList.contains('modal-btn')) {
+			e.preventDefault();
+			modalContent = document.querySelector('.modal-prod');
+			openModal(loadModalData);
+		}
+	});
 
 	//* функция создания окна товара
 	const loadModalData = async function(id = 1) {
