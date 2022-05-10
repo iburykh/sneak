@@ -180,7 +180,6 @@ orderModalList.addEventListener('click', (e) => {
 			orderModalList.style.maxHeight = orderModalList.scrollHeight + 'px';
 		}, 100);
 
-
 		document.querySelector(`.mini-cart__item[data-id="${id}"]`).remove();
 
 		let btnProd = document.querySelector(`.add-to-cart-btn[data-id="${id}"]`);
@@ -190,7 +189,6 @@ orderModalList.addEventListener('click', (e) => {
 
 		// изменяем общую стоимость товаров в окне и в мини-корзине
 		priseFull -= priceItrm;
-		orderModalSumm.textContent = `${normalPrice(priseFull)} р`;
 		fullPrice.textContent = `${normalPrice(priseFull)} р`;
 
 		// удаляем товары в окне и в мини-корзине
@@ -205,15 +203,44 @@ orderModalList.addEventListener('click', (e) => {
 				orderModalShow.classList.remove('modal-cart-order__show--active');
 			}
 			cartCount.textContent = num; 
-
+			orderModalSumm.textContent = `${normalPrice(priseFull)} р`;
 			orderModalQuantity.textContent = `${num} шт`;
 		}, 300);
-
-
-
 		updateStorage();
 	}
 });
+
+// очищение корзины после нажатия кнопки "заказать" (используется в форме заказа)
+const allDel = function() {
+	orderModalShow.classList.remove('modal-cart-order__show--active');
+	orderModalList.classList.remove('modal-cart-order__list--open');
+	orderModalList.style.maxHeight = null;
+
+	orderModalShow.classList.remove('modal-cart-order__show--active')
+	orderModalSumm.textContent = '0 р';
+	orderModalQuantity.textContent = '0 шт';
+	document.querySelector('.modal-cart-form__submit').setAttribute("disabled", "disabled");
+
+	let products =  document.querySelectorAll('.modal-cart-product');
+	products.forEach(function(el) {
+		el.remove();
+	});
+
+	cartCount.classList.remove('cart__count--active');
+	cartCount.textContent = '0';
+	document.querySelector('.cart').setAttribute("disabled", "disabled"); 
+
+	let miniCartItems = document.querySelectorAll('.mini-cart__item');
+	miniCartItems.forEach(function(el) {
+		el.remove();
+	});
+	fullPrice.textContent = '0 р';
+	let btnDisabled = document.querySelectorAll('.add-to-cart-btn[disabled="disabled"]');
+	btnDisabled.forEach(function(el) {
+		el.removeAttribute('disabled');
+	});
+	updateStorage();
+}
 
 // функция заполнения модального окна товароми из мини-корзины
 const modalCartLoad = async (id) => {

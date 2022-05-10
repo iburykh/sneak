@@ -62,6 +62,9 @@ if (forms.length > 0) {
 							textMessage.classList.add('active');
 						}
 						// clearInputs(inputs);
+						if (item.classList.contains('modal-cart-form')) {
+							allDel();
+						}
 						form.reset();
 						setTimeout(() => {
 							if (textMessage) {
