@@ -55,21 +55,12 @@ function send(form) {
 		//* ======== Сообщение об отправке ============
 		let ok = form.querySelector('.quiz-send__ok');
 		let textMessage = form.querySelector('.quiz-message');
-		if (textMessage) {
-			textMessage.textContent = 'Загрузка...';
-			textMessage.classList.add('active');
-		}
 
 		//*========= FormData ===============
 		const quizFormData = new FormData();
 		for (let key in quizReply) {
 			quizFormData.append(key, quizReply[key]);
 		}
-		// formData.append('image', formImage.files[0]);
-		//* Проверка FormData
-		// for(var pair of quizFormData.entries()) {
-		// 	console.log(pair[0]+ ': '+ pair[1]);
-		// }
 
 		//*========= Отправка данных ===============
 		const quizData = async (url, data) => {
@@ -78,17 +69,6 @@ function send(form) {
 				body: data
 			});	
 			if (response.ok) {
-
-				// let result = await response.json(); // json() - для вывода сообщения;
-				// alert(result.message);
-
-				let result = await response.text(); // text() - для проверки на сервере, подключить server.php)
-				// console.log(result); // это для проверки на сервере
-
-				if (textMessage) {
-					textMessage.textContent = 'Ok!';
-					textMessage.classList.add('active');
-				}
 				ok.classList.add('active');
 				clearInputs(quizInputs);
 				setTimeout(() => {
@@ -111,7 +91,7 @@ function send(form) {
 			}
 		};
 		// quizData('../sendmail.php', quizFormData);
-		quizData('../server.php', quizFormData) //! убрать (это для проверки на сервере)
+		quizData('../server.php', quizFormData)
 
 	}
 }

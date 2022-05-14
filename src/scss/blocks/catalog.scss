@@ -245,9 +245,9 @@
 			transform: translateX(-50%);
 			top: 8px;
 			bottom: 8px;
-			width: 0.5px;
+			width: 0px;
+			border: solid 0.5px $color-gray;
 			height: 34px;
-			background-color: $color-gray;
 		}
 	}
 

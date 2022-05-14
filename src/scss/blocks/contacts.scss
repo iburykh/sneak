@@ -66,12 +66,23 @@
 	}
 
 	&__map {
+		position: relative;
 		width: 680px;
 		height: 497px;
-		background-image: url("../img/loading_1.gif");
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: 60px;
+		// background-color: rgba(0,0,0,.1);
+		&::before {
+			content:'';
+			position: absolute;
+			top: 44%;
+			left: 47%;
+			display: inline-block;
+			width: 48px;
+			height: 48px;
+			border-radius: 50%;
+			border: 10px solid;
+			border-color: rgba(72, 66, 131, 0.15) rgba(72, 66, 131, 0.25) rgba(72, 66, 131, 0.35) rgba(72, 66, 131, 0.5);
+			animation: rotation 1s linear infinite;
+		}
 		[class*="copyrights-pane"] {
 			display: none !important;
 		}
@@ -87,6 +98,14 @@
 			height: 350px;
 		}
 	}
+	@keyframes rotation {
+		0% {
+		  transform: rotate(0deg);
+		}
+		100% {
+		  transform: rotate(360deg);
+		}
+	} 
 }
 
 .tooltip {

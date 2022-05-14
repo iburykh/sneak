@@ -8,7 +8,31 @@
 //? эти параметры указывать, если они разные для разных окон - если одинаковые - меняем speedTime и modalAnimation
 //* data-speed="300" - добавить время выполнения, по умолчанию 500 (ставится в соответствии с $transition-time)
 //* data-animation="fadeInUp"  - добавить анимацию при открытии модального окна (контента внутри оболочки), по умолчанию 'fade'
-
+const modalSlider = function() {
+	const minSlider = new Swiper('.slider-min', {
+		grabCursor: true,
+		slidesPerView: 6,
+		initialSlide: 0,
+		spaceBetween: 20,
+		freeMode: true,
+	});
+	
+	const mainSlider = new Swiper('.slider-main', {
+		grabCursor: true,
+		spaceBetween: 20,
+		slidesPerView: 1,
+		initialSlide: 0,
+		simulateTouch: false,
+		effect: 'fade',
+		fadeEffect: {
+		  crossFade: true
+		},
+		thumbs: {
+			swiper: minSlider,
+		}
+	});
+};
+const lazyVideo = document.querySelector('iframe[data-src]');
 const modal = document.querySelector('.modal-overlay');
 const modalBtn = document.querySelectorAll('[data-btn]');
 const openWindows = document.querySelectorAll('[data-modal]');
@@ -28,7 +52,6 @@ const focusElements = [
 let modalContent;
 let lastFocus = false;
 let speedTime = 500;
-// let modalAnimation = 'fade';
 if (modal) {
 	modalBtn.forEach(function(item) {
 		item.addEventListener('click', function(e) {
@@ -37,15 +60,9 @@ if (modal) {
 				e.preventDefault();
 				let modalName = target.dataset.btn;
 				modalContent = document.querySelector(`.${modalName}`);
-				// скорость и анимация - если добавлены в аргумент data
 				let speed = target.dataset.speed;
-				// let animation = target.dataset.animation;
 				speedTime = speed ? parseInt(speed) : 500;
-				// modalAnimation = animation ? animation : 'fade';
 				openModal();
-
-				// todo если есть кнопки внутри модального окна, которые открывают следующее модальное окно (data-inside), передаем аргумент target
-				// openModal(target);
 			}
 		});
 	});
@@ -74,25 +91,13 @@ if (modal) {
 
 function openModal(func) {
 	lastFocus = document.activeElement;
-	// todo если есть кнопки внутри модального окна, которые открывают следующее модальное окно (data-inside), lastFocus получаем так (обычный убрать):
-	// if (!btn.closest(`[data-inside]`)) {
-	// 	lastFocus = document.activeElement;
-	// }
-
 	openWindows.forEach(item => {
 		item.classList.remove('modal-open');
 		item.setAttribute('aria-hidden', true);
-		// item.classList.remove('animate-open');
-		// item.classList.remove(modalAnimation);
 	});
 
 	if (!modal.classList.contains('is-open')){
 		disableScroll();
-	}
-
-	if (func && modalContent.classList.contains('modal-prod')) {
-		let openBtnId = lastFocus.dataset.id;	
-		func(openBtnId);
 	}
 
 	modal.classList.add('is-open');
@@ -112,10 +117,12 @@ function openModal(func) {
 
 	modalContent.classList.add('modal-open');
 	modalContent.setAttribute('aria-hidden', false);
-	// modalContent.classList.add(modalAnimation);
-
+	if (modalContent.classList.contains('modal-prod')) {
+		modalSlider();
+		lazyVideo.src = lazyVideo.dataset.src;
+		lazyVideo.removeAttribute('data-src');
+	}
 	setTimeout(() => {
-		// modalContent.classList.add('animate-open');
 		focusTrap();
 	}, speedTime);
 }
@@ -124,8 +131,6 @@ function closeModal() {
 	openWindows.forEach(item => {
 		item.classList.remove('modal-open');
 		item.setAttribute('aria-hidden', true);
-		// item.classList.remove('animate-open');
-		// item.classList.remove(modalAnimation);
 	});
 
 	enableScroll();

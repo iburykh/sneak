@@ -67,6 +67,7 @@
 		padding-right: 10px;
 		width: 125px;
 		text-align: left;
+		color:$color-text;
 		&::before {
 			content:'';
 			position: absolute;
@@ -78,7 +79,7 @@
 			background: url('../img/angle.svg') center center/cover no-repeat;
 			transition: transform 0.3s ease-in-out;
 		}
-		&--active {
+		&.active {
 			&::before {
 				transform: translateY(-50%);
 			}
@@ -87,15 +88,6 @@
 
 	&__list {
 		margin-top: 20px;
-		overflow: hidden;
-		max-height: 0;
-		box-sizing: content-box;
-		opacity: 0;
-		transition: all 0.3s ease-out;
-		will-change: max-height;
-		&--open {
-			opacity: 1;
-		}
 	}
 }
 

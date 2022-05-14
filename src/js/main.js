@@ -47,8 +47,6 @@ links.forEach(link => {
 		let toBlock = document.querySelector('.' + hash);
 
 		zenscroll.to(toBlock);
-
-		// zenscroll.to(toBlock, 500); // 500ms == время прокрутки
 	});
 });
 
@@ -61,5 +59,15 @@ window.addEventListener('scroll', () => {
 	} else {
 		upElem.classList.remove('active');
 	}
+});
+
+const tooltipBtn = document.querySelector('.tooltip__btn');
+const tooltipText = document.querySelector('.tooltip__txt');
+let tooltipOpen = false;
+tooltipBtn.addEventListener('touchend', function() {
+	tooltipOpen = !tooltipOpen; 
+	tooltipText.style.opacity = (tooltipOpen ? '1' : '0');
+	tooltipText.style.visibility = (tooltipOpen ? 'visible' : 'hidden');
+	tooltipText.style.transform = (tooltipOpen ? 'translateY(0)' : 'translateY(10px)');
 });
 
